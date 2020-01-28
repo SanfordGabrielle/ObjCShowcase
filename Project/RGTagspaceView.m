@@ -39,7 +39,8 @@ int const Y_POSITION_FOR_TAGS = 7;
     }
 
     return self;
-}
+} //end initWithCoder:
+
 
 - (void)tagSpaceInit
 {
@@ -77,6 +78,7 @@ int const Y_POSITION_FOR_TAGS = 7;
     [_button setBackgroundColor:[UIColor colorWithHexString:@"669900"]];
     [_button setImage:[UIImage imageNamed:@"addTagImage.png"] forState:UIControlStateNormal];
 }
+
 
 -(void)tagFieldDidChange:(NSString *)tagSpaceString
 {
@@ -116,6 +118,7 @@ int const Y_POSITION_FOR_TAGS = 7;
 
 }
 
+
 - (BOOL)textField:(UITextField*)textField shouldChangeCharactersInRange:(NSRange)range
 replacementString: (NSString*) string
 {
@@ -125,10 +128,9 @@ replacementString: (NSString*) string
     const CGSize quickCharSize = [string sizeWithAttributes: userAttributes];
     float quickWidth = quickCharSize.width;
 
-    //NSLog(@"Here is the replacement string: %@", string);
     NSString *catchString = _textField.text;
     NSString *stringConstruct = [catchString stringByAppendingString:string];
-    [self tagFieldDidChange:stringConstruct]; //grab the tagSpaceTextField's current string and add the replacementString on
+    [self tagFieldDidChange:stringConstruct]; //grab the tagSpaceTextField's current string and add the replacementString
 
     //The user is attempting a backspace, let them
     if (quickWidth == 0)
@@ -221,12 +223,7 @@ replacementString: (NSString*) string
             desiredTagWidth = totalWordWidth + 10;
         }
 
-        //  UIButton *catchLastTagButton = tagArray[tagArray.count - 1];
-        //        float totalWidth = (catchLastTagButton.frame.origin.x + catchLastTagButton.frame.size.width + 5 + desiredTagWidth + 5);
         [self reframeContent:_scrollView];
-        //        if([tagArray count] > 0){
-        //            [self.tagSpace setContentOffset:CGPointMake(((UIButton *)[tagArray objectAtIndex:[tagArray count]-1]).frame.origin.x,((UIButton *)[tagArray objectAtIndex:[tagArray count]-1]).frame.origin.y) animated:YES];
-        //        }
 
         return YES;
 
@@ -237,9 +234,8 @@ replacementString: (NSString*) string
         return YES;
     }
 
-    //[self reframeContent:_scrollView];
-
 }
+
 
 -(UIButton *)createTag:(NSString *)word withXPosition:(float)xPositionToUse
 {
@@ -275,6 +271,7 @@ replacementString: (NSString*) string
     return tag;
 }
 
+
 -(float)findNextTagXPosition:(UIButton *)lastTag
 {
     float nextXPosition = 0.0;
@@ -283,6 +280,7 @@ replacementString: (NSString*) string
 
     return nextXPosition;
 }
+
 
 -(void) reframeContent:(UIScrollView *)scrollView
 {
@@ -293,6 +291,7 @@ replacementString: (NSString*) string
 
     scrollView.contentSize = contentRect.size;
 }
+
 
 -(void)deleteTag:(UIButton *)sender
 {
@@ -313,10 +312,10 @@ replacementString: (NSString*) string
         [self shiftAllTagsOnDeletion:sender];
     }
 
-
     [_tagArray removeObject:sender];
     _lastTagArrayCount--;
 }
+
 
 -(void)shiftAllTagsOnDeletion:(UIButton *)deletedTag
 {
@@ -340,7 +339,6 @@ replacementString: (NSString*) string
             catchNextButton = [_tagArray objectAtIndex:(indexOfDeletedTag + 2 + i)];
 
             nextXPosition = [self findNextTagXPosition:_tagArray[indexOfDeletedTag + 1 + i]];
-            //            nextYPosition = [self findNextTagYPosition:tagArray[indexOfDeletedTag + 1 + i] stringOfNewTag:catchNextButton.titleLabel.text widthOfTagSpace:widthOfTagSpace];
 
             [UIView animateWithDuration:0.5f delay:0.0f options:0
                              animations:^{
@@ -354,7 +352,6 @@ replacementString: (NSString*) string
         catchNextButton = [_tagArray objectAtIndex:(indexOfDeletedTag + 1)];
 
         nextXPosition = [self findNextTagXPosition:_tagArray[indexOfDeletedTag - 1]];
-
 
         [UIView animateWithDuration:0.5f delay:0.0f options:0
                          animations:^{
@@ -389,8 +386,8 @@ replacementString: (NSString*) string
     UIButton *newTag;
 
     //Generate all tags
-    for(int i=0; i<[p.tags count]; i++){
-
+    for(int i=0; i<[p.tags count]; i++)
+    {
         //If more than one tag we look at the previous tag for the new position
         if(i >= 1)
         {
@@ -402,23 +399,22 @@ replacementString: (NSString*) string
         {
             //the tag to create is the first tag in tagSpace
             newTag = [self createTag:p.tags[i] withXPosition:5];
-
         }
 
         [p.tagButtons addObject:newTag];
     }
 
     p.tagsCreated = YES;
-
 }
+
 
 -(void)putTagsFrom:(postClass *)p inSpace:(UIView *)tagSpace
 {
-    for(int i=0; i < [p.tagButtons count]; i++){
+    for(int i=0; i < [p.tagButtons count]; i++)
+    {
         [tagSpace addSubview:[p.tagButtons objectAtIndex:i]];
     }
 }
-
 
 #pragma mark - UITextFieldDelegate
 
@@ -443,14 +439,9 @@ replacementString: (NSString*) string
     return YES;
 }
 
+
 - (BOOL)textFieldShouldClear:(UITextField *)textField
 {
-    //    for (UIView *subView in tagSpace.subviews)
-    //        [subView removeFromSuperview];
-
-    //    [tagArray removeAllObjects];
-    //    lastTagArrayCount = 0;
-
     return YES;
 }
 
